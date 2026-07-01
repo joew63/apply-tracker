@@ -27,27 +27,23 @@ def app_create():
     """)
 
 def add_company(name):
-    contains = cursor.execute("SELECT name FROM companies WHERE name = ?", (name,)) 
-    print(contains)   
+    contains = cursor.execute("SELECT name FROM companies WHERE name = ?", (name,))  
     if contains.fetchone() is None:
         cursor.execute("""
             INSERT INTO companies (name) VALUES (?)
         """, (name,))
+        print(f"Inserted {name}")
+        connect.commit()
 
-def add_application(name):
-    contains = cursor.execute("SELECT name FROM companies WHERE name = ?", (name,))    
-    if contains.fetchone() is None:
+def add_application(name, role, status, date_applied, notes):
+    result = cursor.execute("SELECT company_id FROM companies WHERE name = ?", (name,))
+    row = result.fetchone()
+    if row is None:
         print("add company first")
     else:
-        id = cursor.execute("SELECT company_id FROM companies WHERE name = ?", (name,))
-    cursor.execute(f"""
-        INSERT INTO applications (name) VALUES (?)
-    """, (name,))
-
-app_create()
-add_company("Microsoft")
-add_company("Amazon")
-add_company("Microsoft")
-add_company("Microsoft")
-add_company("Microsoft")
-connect.commit()
+        company_id = row[0]
+        cursor.execute(f"""
+            INSERT INTO applications (company_id, role, status, date_applied, notes) VALUES (?, ?, ?, ?, ?)
+        """, (company_id, role, status, date_applied, notes,))
+        print(f"Inserted application for {name}")
+        connect.commit()
