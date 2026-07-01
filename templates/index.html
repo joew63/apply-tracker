@@ -4,31 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>Document</title>
+    <title>Internship Tracker</title>
 </head>
 <body>
-    <div>
-        hello
-    </div>
-    <p>Enter Company:</p>
-    <form action="">
+    <h1>Internship Tracker</h1>
+
+    <h2>Add Company</h2>
+    <form action="/" method="POST">
+        <input type="hidden" name="form_type" value="add_company">
         <label for="company">Company Name:</label>
-        <input type="text" id="company">
-        <input type="submit" value="Submit">
+        <input type="text" id="company" name="name">
+        <input type="submit" value="Add Company">
     </form>
+
     <br>
-    <p>Enter Application:</p>
-    <form action="">
-        <label for="company">Company Name:</label>
-        <input type="text" id="company">
+
+    <h2>Add Application</h2>
+    <form action="/" method="POST">
+        <input type="hidden" name="form_type" value="add_application">
+        <label for="app_company">Company Name:</label>
+        <input type="text" id="app_company" name="name">
         <label for="role">Role:</label>
-        <input type="text" id="role">
+        <input type="text" id="role" name="role">
         <label for="status">Status:</label>
-        <input type="" id="status">
+        <select id="status" name="status">
+            <option value="Applied">Applied</option>
+            <option value="Interview">Interview</option>
+            <option value="Offer">Offer</option>
+            <option value="Rejected">Rejected</option>
+        </select>
         <label for="date">Date Applied:</label>
-        <input type="date">
+        <input type="date" name="date_applied">
         <label for="notes">Notes:</label>
-        <input type="text" id="notes">
+        <input type="text" id="notes" name="notes">
+        <input type="submit" value="Add Application">
     </form>
 </body>
 </html>
