@@ -93,7 +93,7 @@ h1 {
 
 .theme-toggle:hover {
     background: var(--hover-row);
-    transform: scale(1.5);
+    transform: scale(1.1);
 }
 
 .theme-toggle:active {
