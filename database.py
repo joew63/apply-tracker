@@ -56,6 +56,17 @@ def add_application(name, role, status, date_applied, notes):
         connect.commit()
         connect.close()
 
+def get_all_companies():
+    connect = get_connection()
+    cursor = connect.cursor()
+    result = cursor.execute("""
+        SELECT companies.company_id, companies.name
+        FROM companies
+    """)
+    data = result.fetchall()
+    connect.close()
+    return data
+
 def get_all_applications():
     connect = get_connection()
     cursor = connect.cursor()
@@ -67,10 +78,3 @@ def get_all_applications():
     data = result.fetchall()
     connect.close()
     return data
-
-# app_create()
-# add_company("Microsoft")
-# add_company("Amazon")
-# add_application("Amazon", "SWE intern", "Applied","7/1/2026", "AWS cloud")
-# add_application("Microsoft", "SWE intern", "Applied","7/1/2026", "Azure")
-# add_application("Wendys", "Drive thru", "Applied","7/1/2026", "To the moon")
