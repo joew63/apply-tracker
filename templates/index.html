@@ -1,88 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Geist+Pixel&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <title>Internship Tracker</title>
 </head>
 <body>
-    <h1>Internship Tracker</h1>
 
-    <h2>Add Company</h2>
-    <form action="/" method="POST">
-        <input type="hidden" name="form_type" value="add_company">
-        <label for="company">Company Name:</label>
-        <input type="text" id="company" name="name">
-        <input type="submit" value="Add Company">
-    </form>
+    <div class="page-wrapper">
 
-    <br>
+        <!-- Header -->
+        <header>
+            <h1>Internship Tracker</h1>
+            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <span class="theme-icon">☀️</span>
+            </button>
+        </header>
 
-    <h2>Add Application</h2>
-    <form action="/" method="POST">
-        <input type="hidden" name="form_type" value="add_application">
-        <label for="app_company">Company Name:</label>
-        <input type="text" id="app_company" name="name">
-        <label for="role">Role:</label>
-        <input type="text" id="role" name="role">
-        <label for="status">Status:</label>
-        <select id="status" name="status">
-            <option value="Applied">Applied</option>
-            <option value="Interview">Interview</option>
-            <option value="Offer">Offer</option>
-            <option value="Rejected">Rejected</option>
-        </select>
-        <label for="date">Date Applied:</label>
-        <input type="date" name="date_applied">
-        <label for="notes">Notes:</label>
-        <input type="text" id="notes" name="notes">
-        <input type="submit" value="Add Application">
-    </form>
-    <br>
-    <div id="container">
-        <table id="company_table">
-            <thead>
-                <tr>
-                    <th>Number</th>
-                    <th>Company</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for company in companies %}
-                <tr>
-                    <td>{{ company[0] }}</td>
-                    <td>{{ company[1] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <table id="app_table">
-            <thead>
-                <tr>
-                    <th>Company</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Date Applied</th>
-                    <th>Notes</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for app in applications %}
-                <tr>
-                    <td>{{ app[0] }}</td>
-                    <td>{{ app[1] }}</td>
-                    <td>{{ app[2] }}</td>
-                    <td>{{ app[3] }}</td>
-                    <td>{{ app[4] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <!-- Forms -->
+        <div class="forms-row">
+
+            <div class="card">
+                <h2 class="card-title">Add Company</h2>
+                <form action="/" method="POST">
+                    <input type="hidden" name="form_type" value="add_company">
+                    <div class="form-group">
+                        <label for="company">Company Name</label>
+                        <input type="text" id="company" name="name" placeholder="e.g. Google">
+                    </div>
+                    <button type="submit" class="btn">Add Company</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Log Application</h2>
+                <form action="/" method="POST">
+                    <input type="hidden" name="form_type" value="add_application">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="app_company">Company</label>
+                            <input type="text" id="app_company" name="name" placeholder="e.g. Google">
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Role</label>
+                            <input type="text" id="role" name="role" placeholder="e.g. SWE Intern">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status" name="status">
+                                <option value="Applied">Applied</option>
+                                <option value="Interview">Interview</option>
+                                <option value="Offer">Offer</option>
+                                <option value="Rejected">Rejected</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Date Applied</label>
+                            <input type="date" id="date" name="date_applied">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Notes</label>
+                        <input type="text" id="notes" name="notes" placeholder="Any extra details...">
+                    </div>
+                    <button type="submit" class="btn">Log Application</button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Tables -->
+        <div id="container">
+
+            <div id="company_table">
+                <h2 class="section-title">Companies <span class="count">{{ companies|length }}</span></h2>
+                {% if companies %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for company in companies %}
+                        <tr>
+                            <td class="muted">{{ company[0] }}</td>
+                            <td>{{ company[1] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">No companies added yet.</div>
+                {% endif %}
+            </div>
+
+            <div id="app_table">
+                <h2 class="section-title">Applications <span class="count">{{ applications|length }}</span></h2>
+                {% if applications %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Date Applied</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in applications %}
+                        <tr>
+                            <td><strong>{{ app[0] }}</strong></td>
+                            <td>{{ app[1] }}</td>
+                            <td><span class="badge badge-{{ app[2]|lower }}">{{ app[2] }}</span></td>
+                            <td class="muted">{{ app[3] }}</td>
+                            <td class="muted">{{ app[4] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">No applications logged yet.</div>
+                {% endif %}
+            </div>
+
+        </div>
+
     </div>
+
+    <script>
+        // Apply saved theme on load
+        const saved = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', saved);
+        updateIcon(saved);
+
+        const dateInput = document.getElementById('date');
+        if (dateInput) {
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.value = today;
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            updateIcon(next);
+        }
+
+        function updateIcon(theme) {
+            document.querySelector('.theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+    </script>
 
 </body>
 </html>
