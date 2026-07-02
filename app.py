@@ -16,7 +16,7 @@ def main():
                 request.form.get('role').title(),
                 request.form.get('status').capitalize(),
                 request.form.get('date_applied'),
-                request.form.get('notes').capitalize()
+                request.form.get('notes')
             )
         return redirect(url_for('main'))
     applications = get_all_applications()
