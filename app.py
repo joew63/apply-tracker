@@ -19,8 +19,8 @@ def main():
                 request.form.get('notes').capitalize()
             )
         return redirect(url_for('main'))
-    print('hello')
     applications = get_all_applications()
     return render_template('index.html', applications=applications)
+
 if __name__ == "__main__":
     app.run(debug=True)
