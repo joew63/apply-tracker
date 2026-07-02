@@ -38,6 +38,7 @@ def add_company(name):
         """, (name,))
         print(f"Inserted {name}")
         connect.commit()
+        connect.close()
 
 def add_application(name, role, status, date_applied, notes):
     connect = get_connection()
@@ -53,6 +54,19 @@ def add_application(name, role, status, date_applied, notes):
         """, (company_id, role, status, date_applied, notes,))
         print(f"Inserted application for {name}")
         connect.commit()
+        connect.close()
+
+def get_all_applications():
+    connect = get_connection()
+    cursor = connect.cursor()
+    result = cursor.execute("""
+                            SELECT companies.name, applications.role, applications.status, applications.date_applied, applications.notes 
+                            FROM applications 
+                            JOIN companies ON applications.company_id = companies.company_id
+    """)
+    data = result.fetchall()
+    connect.close()
+    return data
 
 # app_create()
 # add_company("Microsoft")
