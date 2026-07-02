@@ -43,27 +43,46 @@
         <input type="submit" value="Add Application">
     </form>
     <br>
-    <table>
-    <thead>
-        <tr>
-            <th>Company</th>
-            <th>Role</th>
-            <th>Status</th>
-            <th>Date Applied</th>
-            <th>Notes</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for app in applications %}
-        <tr>
-            <td>{{ app[0] }}</td>
-            <td>{{ app[1] }}</td>
-            <td>{{ app[2] }}</td>
-            <td>{{ app[3] }}</td>
-            <td>{{ app[4] }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div id="container">
+        <table id="company_table">
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Company</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for company in companies %}
+                <tr>
+                    <td>{{ company[0] }}</td>
+                    <td>{{ company[1] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <table id="app_table">
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Date Applied</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in applications %}
+                <tr>
+                    <td>{{ app[0] }}</td>
+                    <td>{{ app[1] }}</td>
+                    <td>{{ app[2] }}</td>
+                    <td>{{ app[3] }}</td>
+                    <td>{{ app[4] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 </body>
 </html>
