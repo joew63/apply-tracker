@@ -86,5 +86,7 @@ def clear_companies():
     cursor = connect.cursor()
     cursor.execute("DELETE FROM applications")
     cursor.execute("DELETE FROM companies")
+    cursor.execute("DELETE FROM sqlite_sequence WHERE name = 'companies'")
+    cursor.execute("DELETE FROM sqlite_sequence WHERE name = 'applications'")
     connect.commit()
     connect.close()
