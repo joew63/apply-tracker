@@ -11,6 +11,7 @@ A full stack web app to track internship and job applications, built with Flask 
 - View all companies and applications in a live dashboard
 - Color coded status badges (Applied, Interview, Offer, Rejected)
 - Toggle between dark and light mode
+- Clear all data with a double confirm button — autoincrement resets to 1 on clear
 
 ## Technologies used
 
@@ -19,11 +20,12 @@ A full stack web app to track internship and job applications, built with Flask 
 - Jinja2
 - SQLite3
 - HTML/CSS
+- JavaScript
 
 ## Project structure
 
 - `app.py` — Flask routes and request handling
-- `database.py` — all SQLite database operations (create, insert, query)
+- `database.py` — all SQLite database operations (create, insert, query, clear)
 - `templates/index.html` — frontend template rendered by Flask
 - `static/style.css` — styling and dark/light mode theming
 
@@ -59,6 +61,14 @@ Then visit `http://127.0.0.1:5000` in your browser.
 Two related tables power the app:
 
 - `companies` — stores unique companies
-- `applications` — stores applications, linked to companies via a foreign key
+- `applications` — stores applications linked to companies via a foreign key
+
+The `company_id` foreign key relationship ensures every application references a valid company. Clearing the database also resets SQLite's internal `sqlite_sequence` table, so autoincrement ids restart from 1.
 
 The database file `applications.db` is created automatically on first run and is excluded from version control.
+
+## Roadmap
+
+- Edit individual applications
+- Filter applications by status
+- Add application success rate stats
