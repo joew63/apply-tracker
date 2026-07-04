@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from database import app_create, add_company, add_application, get_all_companies, get_all_applications
+from database import app_create, add_company, add_application, get_all_companies, get_all_applications, clear_companies
 
 app = Flask(__name__)
 app_create()
@@ -18,6 +18,9 @@ def main():
                 request.form.get('date_applied'),
                 request.form.get('notes')
             )
+        elif form_type == 'clear_database':
+            clear_companies()
+            return redirect(url_for('main', cleared='true'))
         return redirect(url_for('main'))
     companies = get_all_companies()
     applications = get_all_applications()

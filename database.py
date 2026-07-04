@@ -8,16 +8,16 @@ def get_connection():
 def app_create():
     connect = get_connection()
     cursor = connect.cursor()
-    cursor.execute("DROP TABLE IF EXISTS applications")
-    cursor.execute("DROP TABLE IF EXISTS companies")
+    # cursor.execute("DROP TABLE IF EXISTS applications")
+    # cursor.execute("DROP TABLE IF EXISTS companies")
     cursor.execute("""
-        CREATE TABLE companies (
+        CREATE TABLE IF NOT EXISTS companies (
             company_id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT        
         )
     """)
     cursor.execute("""
-        CREATE TABLE applications (
+        CREATE TABLE IF NOT EXISTS applications (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             company_id INTEGER,
             role TEXT,
@@ -27,6 +27,8 @@ def app_create():
             FOREIGN KEY (company_id) REFERENCES companies (company_id)
         )
     """)
+    connect.commit()
+    connect.close()
 
 def add_company(name):
     connect = get_connection()
@@ -78,3 +80,11 @@ def get_all_applications():
     data = result.fetchall()
     connect.close()
     return data
+
+def clear_companies():
+    connect = get_connection()
+    cursor = connect.cursor()
+    cursor.execute("DELETE FROM applications")
+    cursor.execute("DELETE FROM companies")
+    connect.commit()
+    connect.close()
