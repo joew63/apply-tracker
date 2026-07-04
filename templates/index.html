@@ -25,15 +25,27 @@
         <div class="forms-row">
 
             <div class="card">
-                <h2 class="card-title">Add Company</h2>
-                <form action="/" method="POST">
-                    <input type="hidden" name="form_type" value="add_company">
-                    <div class="form-group">
-                        <label for="company">Company Name</label>
-                        <input type="text" id="company" name="name" placeholder="e.g. Google">
-                    </div>
-                    <button type="submit" class="btn">Add Company</button>
-                </form>
+                <div id="card-top" style="padding-bottom: 16px;">
+                    <h2 class="card-title">Add Company</h2>
+                    <form action="/" method="POST">
+                        <input type="hidden" name="form_type" value="add_company">
+                        <div class="form-group">
+                            <label for="company">Company Name</label>
+                            <input type="text" id="company" name="name" placeholder="e.g. Google">
+                        </div>
+                        <button type="submit" class="btn">Add Company</button>
+                    </form>
+                </div>
+                <div id="card-bottom" style="padding-top: 16px;">
+                    <h2 class="card-title">Delete Database</h2>
+                    <p id="clear-message" style="display: none; font-size: 13px; color: #22c55e; margin-bottom: 12px;">
+                        Database cleared successfully.
+                    </p>
+                    <form action="/" method="POST">
+                        <input type="hidden" name="form_type" value="clear_database">
+                        <button type="submit" class="btn btn-danger">Clear Database</button>
+                    </form>
+                </div>
             </div>
 
             <div class="card">
@@ -148,6 +160,15 @@
             dateInput.value = today;
         }
 
+        if (window.location.search.includes('cleared=true')) {
+            document.getElementById('clear-message').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('clear-message').style.display = 'none';
+                window.history.replaceState({}, document.title, '/');
+            }, 5000);
+        }
+
         function toggleTheme() {
             const current = document.documentElement.getAttribute('data-theme');
             const next = current === 'dark' ? 'light' : 'dark';
@@ -159,6 +180,24 @@
         function updateIcon(theme) {
             document.querySelector('.theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
         }
+
+        const clearBtn = document.querySelector('.btn-danger');
+        let confirmed = false;
+
+        clearBtn.addEventListener('click', function(e) {
+            if (!confirmed) {
+                e.preventDefault();
+                clearBtn.textContent = 'Press again to confirm';
+                clearBtn.style.backgroundColor = '#dc2626';
+                confirmed = true;
+
+                setTimeout(() => {
+                    clearBtn.textContent = 'Clear Database';
+                    clearBtn.style.backgroundColor = '';
+                    confirmed = false;
+                }, 3000);
+            }
+        });
     </script>
 
 </body>
