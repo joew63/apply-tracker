@@ -120,21 +120,56 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>Company</th>
                             <th>Role</th>
                             <th>Status</th>
                             <th>Date Applied</th>
                             <th>Notes</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for app in applications %}
-                        <tr>
-                            <td><strong>{{ app[0] }}</strong></td>
-                            <td>{{ app[1] }}</td>
-                            <td><span class="badge badge-{{ app[2]|lower }}">{{ app[2] }}</span></td>
-                            <td class="muted">{{ app[3] }}</td>
+                        <!-- Display row -->
+                        <tr class="display-row" id="row-{{ app[0] }}">
+                            <td class="muted">{{ app[0] }}</td>
+                            <td><strong>{{ app[1] }}</strong></td>
+                            <td>{{ app[2] }}</td>
+                            <td><span class="badge badge-{{ app[3]|lower }}">{{ app[3] }}</span></td>
                             <td class="muted">{{ app[4] }}</td>
+                            <td class="muted">{{ app[5] }}</td>
+                            <td id="action-btns">
+                                <button class="edit btn-small btn-edit" data-id="{{ app[0] }}">Edit</button>
+                                <button class="archive btn-small" data-id="{{ app[0] }}">Archive</button>
+                            </td>
+                        </tr>
+
+                        <!-- Edit row (hidden by default) -->
+                        <tr class="edit-row" id="edit-row-{{ app[0] }}" style="display: none;">
+                            <td class="muted">{{ app[0] }}</td>
+                            <td><strong>{{ app[1] }}</strong></td>
+                            <td>
+                                <input type="text" class="edit-role" value="{{ app[2] }}" style="width: 100%;">
+                            </td>
+                            <td>
+                                <select class="edit-status">
+                                    <option value="Applied" {% if app[3] == 'Applied' %}selected{% endif %}>Applied</option>
+                                    <option value="Interview" {% if app[3] == 'Interview' %}selected{% endif %}>Interview</option>
+                                    <option value="Offer" {% if app[3] == 'Offer' %}selected{% endif %}>Offer</option>
+                                    <option value="Rejected" {% if app[3] == 'Rejected' %}selected{% endif %}>Rejected</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="date" class="edit-date" value="{{ app[4] }}" style="width: 100%;">
+                            </td>
+                            <td>
+                                <input type="text" class="edit-notes" value="{{ app[5] }}" style="width: 100%;">
+                            </td>
+                            <td id="action-btns">
+                                <button class="confirm-edit btn-small btn-edit" data-id="{{ app[0] }}">Confirm</button>
+                                <button class="cancel-edit btn-small" data-id="{{ app[0] }}">Cancel</button>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -148,57 +183,6 @@
 
     </div>
 
-    <script>
-        // Apply saved theme on load
-        const saved = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', saved);
-        updateIcon(saved);
-
-        const dateInput = document.getElementById('date');
-        if (dateInput) {
-            const today = new Date().toISOString().split('T')[0];
-            dateInput.value = today;
-        }
-
-        if (window.location.search.includes('cleared=true')) {
-            document.getElementById('clear-message').style.display = 'block';
-            
-            setTimeout(() => {
-                document.getElementById('clear-message').style.display = 'none';
-                window.history.replaceState({}, document.title, '/');
-            }, 5000);
-        }
-
-        function toggleTheme() {
-            const current = document.documentElement.getAttribute('data-theme');
-            const next = current === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-            updateIcon(next);
-        }
-
-        function updateIcon(theme) {
-            document.querySelector('.theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
-        }
-
-        const clearBtn = document.querySelector('.btn-danger');
-        let confirmed = false;
-
-        clearBtn.addEventListener('click', function(e) {
-            if (!confirmed) {
-                e.preventDefault();
-                clearBtn.textContent = 'Press again to confirm';
-                clearBtn.style.backgroundColor = '#dc2626';
-                confirmed = true;
-
-                setTimeout(() => {
-                    clearBtn.textContent = 'Clear Database';
-                    clearBtn.style.backgroundColor = '';
-                    confirmed = false;
-                }, 3000);
-            }
-        });
-    </script>
-
+    <script src="{{ url_for('static', filename = 'main.js') }}" defer></script>
 </body>
 </html>

@@ -24,7 +24,7 @@
     --h1-color:     #ffffff;
     --empty-border: #2a2d3a;
     --empty-text:   #4a4d5a;
-    --h2-color: #ffffff;
+    --h2-color:     #ffffff;
 }
 
 :root[data-theme="light"] {
@@ -47,6 +47,7 @@
     --empty-text:   #b0b8c8;
 }
 
+/* ── Base ── */
 body {
     font-family: "Fira Sans", sans-serif;
     background-color: var(--bg);
@@ -56,9 +57,8 @@ body {
     transition: background-color 0.2s, color 0.2s;
 }
 
-/* ── Page wrapper ── */
 .page-wrapper {
-    max-width: 1200px;
+    max-width: 1500px;
     margin: 0 auto;
 }
 
@@ -118,6 +118,12 @@ h1 {
     transition: background-color 0.2s, border-color 0.2s;
 }
 
+.card:first-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .card-title {
     font-size: 14px;
     font-weight: 600;
@@ -128,10 +134,8 @@ h1 {
     font-family: "Inter", sans-serif;
 }
 
-.card:first-child {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+#card-top {
+    border-bottom: 1px solid var(--border);
 }
 
 /* ── Form elements ── */
@@ -185,6 +189,7 @@ select option {
     background-color: var(--surface);
 }
 
+/* ── Buttons ── */
 .btn {
     margin-top: 16px;
     background-color: var(--accent);
@@ -208,6 +213,83 @@ select option {
     transform: scale(0.98);
 }
 
+.btn-danger {
+    background-color: #ef4444;
+}
+
+.btn-danger:hover {
+    background-color: #dc2626;
+}
+
+.btn-small {
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    background-color: transparent;
+    color: var(--text-muted);
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.btn-small:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+
+.btn-small:active {
+    transform: scale(0.97);
+}
+
+.btn-edit {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+
+.cancel-edit {
+    background-color: transparent;
+    border-color: var(--border);
+    color: var(--text-muted);
+}
+
+.cancel-edit:hover {
+    background-color: var(--hover-row);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+.archive {
+    background-color: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 5px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.archive:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+
+.archive:active {
+    transform: scale(0.97);
+}
+
 /* ── Tables layout ── */
 #container {
     display: flex;
@@ -220,7 +302,7 @@ select option {
 }
 
 #app_table {
-    flex: 3;
+    flex: 4;
 }
 
 /* ── Section titles ── */
@@ -295,6 +377,30 @@ td.muted {
     font-size: 13px;
 }
 
+/* ── Edit row ── */
+.edit-row td {
+    background-color: rgba(79, 142, 247, 0.04);
+    border-top: none;
+    border-bottom: 2px solid var(--accent);
+    height: 64px;
+    vertical-align: middle;
+    padding: 8px 16px;
+}
+
+.edit-row input[type="text"],
+.edit-row input[type="date"],
+.edit-row select {
+    font-size: 13px;
+    padding: 6px 8px;
+    height: 36px;
+}
+
+/* ── Archived row ── */
+.archived td {
+    opacity: 0.4;
+    text-decoration: line-through;
+}
+
 /* ── Status badges ── */
 .badge {
     display: inline-block;
@@ -336,17 +442,4 @@ td.muted {
     color: var(--empty-text);
     font-size: 14px;
     transition: background-color 0.2s;
-}
-
-#card-top {
-    border-bottom: 1px solid var(--border);
-    
-}
-
-.btn-danger {
-    background-color: #ef4444;
-}
-
-.btn-danger:hover {
-    background-color: #dc2626;
 }

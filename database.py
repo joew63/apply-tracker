@@ -73,7 +73,7 @@ def get_all_applications():
     connect = get_connection()
     cursor = connect.cursor()
     result = cursor.execute("""
-                            SELECT companies.name, applications.role, applications.status, applications.date_applied, applications.notes 
+                            SELECT applications.id, companies.name, applications.role, applications.status, applications.date_applied, applications.notes 
                             FROM applications 
                             JOIN companies ON applications.company_id = companies.company_id
     """)
@@ -88,5 +88,16 @@ def clear_companies():
     cursor.execute("DELETE FROM companies")
     cursor.execute("DELETE FROM sqlite_sequence WHERE name = 'companies'")
     cursor.execute("DELETE FROM sqlite_sequence WHERE name = 'applications'")
+    connect.commit()
+    connect.close()
+
+def update_application(application_id, role, status, date_applied, notes):
+    connect = get_connection()
+    cursor = connect.cursor()
+    cursor.execute("""
+        UPDATE applications
+        SET role = ?, status = ?, date_applied = ?, notes = ?
+        WHERE id = ?
+    """, (role, status, date_applied, notes, application_id))
     connect.commit()
     connect.close()

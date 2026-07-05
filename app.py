@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for
-from database import app_create, add_company, add_application, get_all_companies, get_all_applications, clear_companies
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+from database import app_create, add_company, add_application, get_all_companies, get_all_applications, clear_companies, update_application
+import json
 
 app = Flask(__name__)
 app_create()
@@ -16,7 +17,7 @@ def main():
                 add_application(
                     request.form.get('name').capitalize(),
                     request.form.get('role').title(),
-                    request.form.get('status').capitalize(),
+                    request.form.get('status'),
                     request.form.get('date_applied'),
                     request.form.get('notes')
                 )
@@ -27,6 +28,18 @@ def main():
     companies = get_all_companies()
     applications = get_all_applications()
     return render_template('index.html', companies=companies, applications=applications)
+
+@app.route("/update", methods=['POST'])
+def update():
+    data = request.get_json()
+    update_application(
+        data['id'],
+        data['role'].title(),
+        data['status'],
+        data['date_applied'],
+        data['notes']
+    )
+    return jsonify({'success': True})
 
 if __name__ == "__main__":
     app.run(debug=True)
