@@ -9,9 +9,12 @@ A full stack web app to track internship and job applications, built with Flask 
 - Add companies you are applying to
 - Log applications with role, status, date applied, and notes
 - View all companies and applications in a live dashboard
+- Inline edit applications — update role, status, date, and notes without leaving the page
+- Archive applications to visually strike them out
 - Color coded status badges (Applied, Interview, Offer, Rejected)
-- Toggle between dark and light mode
+- Delete individual applications
 - Clear all data with a double confirm button — autoincrement resets to 1 on clear
+- Toggle between dark and light mode
 
 ## Technologies used
 
@@ -25,15 +28,16 @@ A full stack web app to track internship and job applications, built with Flask 
 ## Project structure
 
 - `app.py` — Flask routes and request handling
-- `database.py` — all SQLite database operations (create, insert, query, clear)
+- `database.py` — all SQLite database operations (create, insert, query, update, delete, clear)
 - `templates/index.html` — frontend template rendered by Flask
 - `static/style.css` — styling and dark/light mode theming
+- `static/main.js` — all client side JavaScript (theme toggle, inline editing, archive, clear confirm)
 
 ## Setup
 
 Clone the repo:
 ```bash
-git clone https://github.com/y6367/apply-tracker.git
+git clone https://github.com/joew63/apply-tracker.git
 cd apply-tracker
 ```
 
@@ -69,6 +73,6 @@ The database file `applications.db` is created automatically on first run and is
 
 ## Roadmap
 
-- Edit individual applications
 - Filter applications by status
 - Add application success rate stats
+- Persist archived state to the database
