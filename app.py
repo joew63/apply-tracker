@@ -9,15 +9,17 @@ def main():
     if request.method == 'POST':
         form_type = request.form['form_type']
         if form_type == 'add_company':
-            add_company(request.form.get('name').title())
+            if request.form.get('name').title() != '':
+                add_company(request.form.get('name').title())
         elif form_type == 'add_application':
-            add_application(
-                request.form.get('name').capitalize(),
-                request.form.get('role').title(),
-                request.form.get('status').capitalize(),
-                request.form.get('date_applied'),
-                request.form.get('notes')
-            )
+            if request.form.get('role') != '':
+                add_application(
+                    request.form.get('name').capitalize(),
+                    request.form.get('role').title(),
+                    request.form.get('status').capitalize(),
+                    request.form.get('date_applied'),
+                    request.form.get('notes')
+                )
         elif form_type == 'clear_database':
             clear_companies()
             return redirect(url_for('main', cleared='true'))
