@@ -27,6 +27,13 @@ def app_create():
             FOREIGN KEY (company_id) REFERENCES companies (company_id)
         )
     """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT UNIQUE,
+            password_hash TEXT
+        )
+    """)
     connect.commit()
     connect.close()
 
@@ -101,3 +108,29 @@ def update_application(application_id, role, status, date_applied, notes):
     """, (role, status, date_applied, notes, application_id))
     connect.commit()
     connect.close()
+
+def create_user(email, password):
+    connect = get_connection()
+    cursor = connect.cursor()
+    contains = cursor.execute("SELECT email FROM users WHERE email = ?", (email,))
+    if contains.fetchone() is None:
+        cursor.execute("""
+        INSERT INTO users (email, password) VALUES (?, ?)
+    """, (email, password,))
+
+
+
+# def add_company(name):
+#     connect = get_connection()
+#     cursor = connect.cursor()
+#     contains = cursor.execute("SELECT name FROM companies WHERE name = ?", (name,))  
+#     if contains.fetchone() is None:
+#         cursor.execute("""
+#             INSERT INTO companies (name) VALUES (?)
+#         """, (name,))
+#         print(f"Inserted {name}")
+#         connect.commit()
+#         connect.close()
+
+
+def get_user_by_email():
