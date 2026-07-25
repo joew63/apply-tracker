@@ -16,9 +16,14 @@
         <!-- Header -->
         <header>
             <h1>Internship Tracker</h1>
-            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
-                <span class="theme-icon">☀️</span>
-            </button>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                    <span class="theme-icon">☀️</span>
+                </button>
+                <form action="/logout" method="POST">
+                    <button type="submit" class="btn-small">Log Out</button>
+                </form>
+            </div>
         </header>
 
         <!-- Forms -->

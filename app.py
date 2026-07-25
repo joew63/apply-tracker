@@ -51,7 +51,7 @@ def signup():
 
         salt = bcrypt.gensalt()
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
-        
+
         create_user(email, hashed_password)
         return redirect(url_for('login'))
 
@@ -95,6 +95,11 @@ def update():
         data['notes']
     )
     return jsonify({'success': True})
+
+@app.route("/logout", methods=['POST'])
+def logout():
+    session.pop("user_id", None)
+    return redirect(url_for('login'))
 
 if __name__ == "__main__":
     app.run(debug=True)
