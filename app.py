@@ -1,9 +1,25 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
-from database import app_create, add_company, add_application, get_all_companies, get_all_applications, clear_companies, update_application
-import json
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session
+from database import app_create, add_company, add_application, get_all_companies, get_all_applications, clear_companies, update_application, create_user, get_user_by_email
+from dotenv import load_dotenv
+from functools import wraps
+import json, os, bcrypt
 
 app = Flask(__name__)
+load_dotenv()
+app.secret_key = os.environ.get("SECRET_KEY")
+if not app.secret_key:
+    raise RuntimeError("SECRET_KEY environment variable is not set")
 app_create()
+
+def login_required(original_function):
+    @wraps(original_function)
+    def wrapper(*args, **kwargs):
+        if "user_id" in session:
+            return original_function(*args, **kwargs)
+        else:
+            return("nope") # route to login later
+    return wrapper
+
 
 @app.route("/", methods=['GET', 'POST'])
 def main():
