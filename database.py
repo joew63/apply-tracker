@@ -31,7 +31,7 @@ def app_create():
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             email TEXT UNIQUE,
-            password_hash TEXT
+            password TEXT
         )
     """)
     connect.commit()
@@ -46,8 +46,8 @@ def add_company(name):
             INSERT INTO companies (name) VALUES (?)
         """, (name,))
         print(f"Inserted {name}")
-        connect.commit()
-        connect.close()
+    connect.commit()
+    connect.close()
 
 def add_application(name, role, status, date_applied, notes):
     connect = get_connection()
@@ -62,8 +62,8 @@ def add_application(name, role, status, date_applied, notes):
             INSERT INTO applications (company_id, role, status, date_applied, notes) VALUES (?, ?, ?, ?, ?)
         """, (company_id, role, status, date_applied, notes,))
         print(f"Inserted application for {name}")
-        connect.commit()
-        connect.close()
+    connect.commit()
+    connect.close()
 
 def get_all_companies():
     connect = get_connection()
@@ -112,25 +112,22 @@ def update_application(application_id, role, status, date_applied, notes):
 def create_user(email, password):
     connect = get_connection()
     cursor = connect.cursor()
-    contains = cursor.execute("SELECT email FROM users WHERE email = ?", (email,))
-    if contains.fetchone() is None:
-        cursor.execute("""
-        INSERT INTO users (email, password) VALUES (?, ?)
+    cursor.execute("""
+    INSERT INTO users (email, password) VALUES (?, ?)
     """, (email, password,))
+    connect.commit()
+    connect.close()
 
 
 
-# def add_company(name):
-#     connect = get_connection()
-#     cursor = connect.cursor()
-#     contains = cursor.execute("SELECT name FROM companies WHERE name = ?", (name,))  
-#     if contains.fetchone() is None:
-#         cursor.execute("""
-#             INSERT INTO companies (name) VALUES (?)
-#         """, (name,))
-#         print(f"Inserted {name}")
-#         connect.commit()
-#         connect.close()
-
-
-def get_user_by_email():
+def get_user_by_email(email):
+    connect = get_connection()
+    cursor = connect.cursor()
+    result = cursor.execute("""
+        SELECT users.id, users.email, users.password
+        FROM users
+        WHERE users.email = ?
+    """,(email,))
+    data = result.fetchone()
+    connect.close()
+    return data
