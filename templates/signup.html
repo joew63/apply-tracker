@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Sign Up — Internship Tracker</title>
+</head>
+<body class="auth-body">
+
+    <div class="auth-card">
+        <div class="auth-heading">
+            <h1>Internship Tracker</h1>
+        </div>
+
+        <div class="card">
+            {% if error %}
+            <div class="auth-error">{{ error }}</div>
+            {% endif %}
+
+            <form action="/signup" method="POST">
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="">
+                </div>
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+            </form>
+        </div>
+
+        <p class="auth-footer">
+            Already have an account? <a href="{{ url_for('login') }}">Log in</a>
+        </p>
+    </div>
+
+</body>
+</html>

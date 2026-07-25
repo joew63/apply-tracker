@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Log In — Internship Tracker</title>
+</head>
+<body class="auth-body">
+
+    <div class="auth-card">
+        <div class="auth-heading">
+            <h1>Internship Tracker</h1>
+        </div>
+
+        <div class="card">
+            {% if error %}
+            <div class="auth-error">{{ error }}</div>
+            {% endif %}
+
+            <form action="/login" method="POST">
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn">Log In</button>
+            </form>
+        </div>
+
+        <p class="auth-footer">
+            Don't have an account? <a href="{{ url_for('signup') }}">Sign up</a>
+        </p>
+    </div>
+
+</body>
+</html>
