@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify, s
 from database import app_create, add_company, add_application, get_all_companies, get_all_applications, clear_companies, update_application, create_user, get_user_by_email
 from dotenv import load_dotenv
 from functools import wraps
-import json, os, bcrypt
+from email_validator import validate_email, EmailNotValidError
+import os, bcrypt
 
 app = Flask(__name__)
 load_dotenv()
@@ -42,6 +43,11 @@ def signup():
 
         if email is None or password is None:
             return render_template('signup.html', error="Invalid email or password")
+        
+        try:
+            validate_email(email)
+        except EmailNotValidError:
+            return render_template('signup.html', error="Invalid email")
 
         if get_user_by_email(email):
             return render_template('signup.html', error="Email already taken")
