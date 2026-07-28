@@ -44,7 +44,7 @@ def app_create():
 def add_company(user_id, name):
     connect = get_connection()
     cursor = connect.cursor()
-    contains = cursor.execute("SELECT name FROM companies WHERE name = ? AND user_id = ?", (name, user_id))  
+    contains = cursor.execute("SELECT name FROM companies WHERE name = ? COLLATE NOCASE AND user_id = ?", (name, user_id))
     if contains.fetchone() is None:
         cursor.execute("""
             INSERT INTO companies (user_id, name) VALUES (?, ?)
@@ -56,7 +56,7 @@ def add_company(user_id, name):
 def add_application(user_id, name, role, status, date_applied, notes):
     connect = get_connection()
     cursor = connect.cursor()
-    result = cursor.execute("SELECT company_id FROM companies WHERE name = ? AND user_id = ?", (name, user_id))
+    result = cursor.execute("SELECT company_id FROM companies WHERE name = ? COLLATE NOCASE AND user_id = ?", (name, user_id))
     row = result.fetchone()
     if row is None:
         print("add company first")

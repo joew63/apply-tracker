@@ -78,7 +78,7 @@ def main():
             if request.form.get('role') != '':
                 add_application(
                     user_id,
-                    request.form.get('name').capitalize(),
+                    request.form.get('name'),
                     request.form.get('role'),
                     request.form.get('status'),
                     request.form.get('date_applied'),
