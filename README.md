@@ -8,14 +8,15 @@ A full stack web app to track internship and job applications, built with Flask 
 
 - Sign up and log in with an email and password — passwords are hashed with bcrypt, never stored in plain text
 - All dashboard routes are protected — visiting the app while logged out redirects to the login page
+- Each account has its own private set of companies and applications — no user can view or edit another user's data, even by guessing a record's id
 - Add companies you are applying to
-- Log applications with role, status, date applied, and notes
-- View all companies and applications in a live dashboard
+- Log applications with role, status, date applied, and notes — company name matching is case-insensitive, so "google" and "Google" resolve to the same company
+- View all companies and applications in a live dashboard, numbered per-user starting from 1
 - Inline edit applications — update role, status, date, and notes without leaving the page
-- Archive applications to visually strike them out
+- Archive applications to visually strike them out (currently visual only — resets on reload, see Roadmap)
 - Color coded status badges (Applied, Interview, Offer, Rejected)
 - Delete individual applications
-- Clear all data with a double confirm button — autoincrement resets to 1 on clear
+- Clear all of your own data with a double confirm button
 - Toggle between dark and light mode
 - Log out from the dashboard header
 
@@ -84,10 +85,10 @@ Then visit `http://127.0.0.1:5000` in your browser. You'll be redirected to the 
 Three tables power the app:
 
 - `users` — stores registered accounts (email, bcrypt password hash)
-- `companies` — stores unique companies
-- `applications` — stores applications linked to companies via a foreign key
+- `companies` — companies a user is applying to, scoped to the account that created them via a `user_id` foreign key
+- `applications` — applications linked to a company via `company_id`, and also scoped to their owning account via `user_id`
 
-The `company_id` foreign key relationship ensures every application references a valid company. Clearing the database also resets SQLite's internal `sqlite_sequence` table, so autoincrement ids restart from 1.
+Both `company_id` and `user_id` are enforced as foreign keys, and every query that reads, updates, or deletes companies/applications filters by the requesting user's id — so ids are shared across the whole table (not reset per account), but no user's data is ever visible or editable by another account. The "#" column shown in the dashboard is a per-user display number generated at render time, separate from the real database id.
 
 The database file `applications.db` is created automatically on first run and is excluded from version control.
 
@@ -97,10 +98,10 @@ The database file `applications.db` is created automatically on first run and is
 - Sessions are Flask's built-in client-side sessions: session data is signed (not encrypted) and stored in a cookie, verified against `SECRET_KEY` on every request.
 - Login and signup return the same generic error message ("Invalid email or password") on failure, so a failed attempt doesn't reveal whether a given email has an account.
 - Logout is a `POST`-only route, so it can't be triggered by a plain link or embedded image.
+- Every read, write, update, and delete on companies/applications is scoped to `session['user_id']` at the database level — verified by attempting to edit another account's application id directly, which is correctly rejected.
 
 ## Roadmap
 
-- Scope companies/applications per logged-in user (currently, all logged-in users share the same dashboard data — this is the next planned step)
+- Persist archived state to the database (currently client-side only, so it resets on reload or re-login)
 - Filter applications by status
 - Add application success rate stats
-- Persist archived state to the database
