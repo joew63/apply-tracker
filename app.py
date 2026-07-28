@@ -67,35 +67,42 @@ def signup():
 @app.route("/", methods=['GET', 'POST'])
 @login_required
 def main():
+    user_id = session['user_id']
+
     if request.method == 'POST':
         form_type = request.form['form_type']
         if form_type == 'add_company':
             if request.form.get('name').title() != '':
-                add_company(request.form.get('name').title())
+                add_company(user_id, request.form.get('name'))
         elif form_type == 'add_application':
             if request.form.get('role') != '':
                 add_application(
+                    user_id,
                     request.form.get('name').capitalize(),
-                    request.form.get('role').title(),
+                    request.form.get('role'),
                     request.form.get('status'),
                     request.form.get('date_applied'),
                     request.form.get('notes')
                 )
         elif form_type == 'clear_database':
-            clear_companies()
+            clear_companies(user_id)
             return redirect(url_for('main', cleared='true'))
         return redirect(url_for('main'))
-    companies = get_all_companies()
-    applications = get_all_applications()
+
+    companies = get_all_companies(user_id)
+    applications = get_all_applications(user_id)
     return render_template('index.html', companies=companies, applications=applications)
+
 
 @app.route("/update", methods=['POST'])
 @login_required
 def update():
+    user_id = session['user_id']
     data = request.get_json()
     update_application(
+        user_id,
         data['id'],
-        data['role'].title(),
+        data['role'],
         data['status'],
         data['date_applied'],
         data['notes']

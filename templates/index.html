@@ -108,7 +108,7 @@
                     <tbody>
                         {% for company in companies %}
                         <tr>
-                            <td class="muted">{{ company[0] }}</td>
+                            <td class="muted">{{ loop.index }}</td>
                             <td>{{ company[1] }}</td>
                         </tr>
                         {% endfor %}
@@ -138,7 +138,7 @@
                         {% for app in applications %}
                         <!-- Display row -->
                         <tr class="display-row" id="row-{{ app[0] }}">
-                            <td class="muted">{{ app[0] }}</td>
+                            <td class="muted">{{ loop.index }}</td>
                             <td><strong>{{ app[1] }}</strong></td>
                             <td>{{ app[2] }}</td>
                             <td><span class="badge badge-{{ app[3]|lower }}">{{ app[3] }}</span></td>
@@ -152,7 +152,7 @@
 
                         <!-- Edit row (hidden by default) -->
                         <tr class="edit-row" id="edit-row-{{ app[0] }}" style="display: none;">
-                            <td class="muted">{{ app[0] }}</td>
+                            <td class="muted">{{ loop.index }}</td>
                             <td><strong>{{ app[1] }}</strong></td>
                             <td>
                                 <input type="text" class="edit-role" value="{{ app[2] }}" style="width: 100%;">
