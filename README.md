@@ -1,4 +1,4 @@
-# Apply Tracker
+# Callback
 
 A full stack web app to track internship and job applications, built with Flask and SQLite — with session-based authentication protecting the dashboard.
 
@@ -47,8 +47,8 @@ A full stack web app to track internship and job applications, built with Flask 
 
 Clone the repo:
 ```bash
-git clone https://github.com/joew63/apply-tracker.git
-cd apply-tracker
+git clone https://github.com/joew63/callback.git
+cd callback
 ```
 
 Create and activate a virtual environment:
