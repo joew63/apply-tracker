@@ -4,6 +4,8 @@ A full stack web app to track internship and job applications, built with Flask 
 
 > **Note:** This project was built as a learning exercise to explore Flask, relational databases, authentication, and frontend development. It is intended for personal use.
 
+![Callback demo](assets/demo.gif)
+
 ## What it does
 
 - Sign up and log in with an email and password — passwords are hashed with bcrypt, never stored in plain text
